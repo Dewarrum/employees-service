@@ -14,4 +14,5 @@ public sealed class ProgrammingLanguage
 
     public int Id { get; private set; }
     public string Name { get; private set; } = default!;
+    public ICollection<WorkingExperience> WorkingExperiences { get; private set; } = default!;
 }

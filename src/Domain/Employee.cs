@@ -27,4 +27,5 @@ public sealed class Employee
     public Gender Gender { get; private set; }
     public int DepartmentId { get; private set; }
     public Department Department { get; private set; } = default!;
+    public ICollection<WorkingExperience> WorkingExperiences { get; private set; } = default!;
 }
