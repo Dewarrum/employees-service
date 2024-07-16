@@ -1,0 +1,32 @@
+﻿@model Web.Models.Employees.EmployeesIndexModel
+
+@{
+    ViewData["Title"] = "Employees";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Department</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var employee in Model.Employees)
+        {
+            <tr>
+                <td>@employee.FirstName</td>
+                <td>@employee.LastName</td>
+                <td>@employee.Age</td>
+                <td>@employee.Gender</td>
+                <td>@employee.DepartmentName</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
