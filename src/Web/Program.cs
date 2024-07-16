@@ -1,3 +1,4 @@
+using Application;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +9,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"))
 );
+builder.Services.AddApplication();
 
 var app = builder.Build();
 
