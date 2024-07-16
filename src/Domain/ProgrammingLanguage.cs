@@ -8,11 +8,11 @@ public sealed class ProgrammingLanguage
         Name = name;
     }
 
-    private ProgrammingLanguage()
+    internal ProgrammingLanguage()
     {
     }
 
-    public int Id { get; private set; }
-    public string Name { get; private set; } = default!;
-    public ICollection<WorkingExperience> WorkingExperiences { get; private set; } = default!;
+    public int Id { get; internal set; }
+    public string Name { get; internal set; } = default!;
+    public ICollection<WorkingExperience> WorkingExperiences { get; internal set; } = default!;
 }

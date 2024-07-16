@@ -10,12 +10,12 @@ public sealed class Department
         Floor = floor;
     }
 
-    private Department()
+    internal Department()
     {
     }
 
-    public int Id { get; private set; }
-    public string Name { get; private set; } = default!;
-    public int Floor { get; private set; }
-    public ICollection<Employee> Employees { get; private set; } = default!;
+    public int Id { get; internal set; }
+    public string Name { get; internal set; } = default!;
+    public int Floor { get; internal set; }
+    public ICollection<Employee> Employees { get; internal set; } = default!;
 }
