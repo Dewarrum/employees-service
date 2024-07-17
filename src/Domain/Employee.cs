@@ -21,11 +21,11 @@ public sealed class Employee
     }
 
     public int Id { get; private set; }
-    public string FirstName { get; private set; } = default!;
-    public string LastName { get; private set; } = default!;
-    public int Age { get; private set; }
-    public Gender Gender { get; private set; }
-    public int DepartmentId { get; private set; }
+    public string FirstName { get; set; } = default!;
+    public string LastName { get; set; } = default!;
+    public int Age { get; set; }
+    public Gender Gender { get; set; }
+    public int DepartmentId { get; set; }
     public Department Department { get; private set; } = default!;
     public ICollection<WorkingExperience> WorkingExperiences { get; private set; } = default!;
 }

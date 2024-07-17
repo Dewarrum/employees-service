@@ -14,6 +14,7 @@
             <th scope="col">Age</th>
             <th scope="col">Gender</th>
             <th scope="col">Department</th>
+            <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -25,6 +26,7 @@
                 <td>@employee.Age</td>
                 <td>@employee.Gender</td>
                 <td>@employee.DepartmentName</td>
+                <td>@Html.ActionLink("Edit", "Edit", new { id = employee.Id })</td>
             </tr>
         }
         </tbody>

@@ -7,6 +7,8 @@ namespace Application.Employees;
 
 internal sealed class EmployeesService(AppDbContext dbContext, ILogger<EmployeesService> logger) : IEmployeesService
 {
+    public IQueryable<Employee> GetById(int id) => dbContext.Employees.Where(e => e.Id == id);
+
     public IQueryable<Employee> GetAll() => dbContext.Employees.AsQueryable();
 
     public async Task<Employee> Create(CreateEmployeeRequest request)
@@ -47,6 +49,28 @@ internal sealed class EmployeesService(AppDbContext dbContext, ILogger<Employees
 
         logger.LogInformation("Employee '{Id}' successfully created", employee.Id);
 
+        return employee;
+    }
+
+    public async Task<Employee> Edit(EditEmployeeRequest request)
+    {
+        var employee = await dbContext
+            .Employees
+            .FirstOrDefaultAsync(e => e.Id == request.Id);
+        
+        if (employee == null)
+            throw new ResourceNotFoundException<Employee, int>(request.Id);
+
+        employee.FirstName = request.FirstName;
+        employee.LastName = request.LastName;
+        employee.Age = request.Age;
+        employee.Gender = request.Gender;
+        employee.DepartmentId = request.DepartmentId;
+
+        await dbContext.SaveChangesAsync();
+
+        logger.LogInformation("Employee '{Id}' successfully edited", employee.Id);
+        
         return employee;
     }
 }

@@ -72,17 +72,73 @@ public sealed class EmployeesController(
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Add(EmployeesCreateModel dto)
+    public async Task<IActionResult> Add(EmployeesCreateModel model)
     {
         await employeesService.Create(new CreateEmployeeRequest(
-            dto.FirstName,
-            dto.LastName,
-            dto.Age,
-            dto.Gender,
-            dto.DepartmentId,
-            dto.ProgrammingLanguageId
+            model.FirstName,
+            model.LastName,
+            model.Age,
+            model.Gender,
+            model.DepartmentId,
+            model.ProgrammingLanguageId
         ));
 
         return RedirectToAction("Index");
+    }
+
+    public async Task<IActionResult> Edit(int id)
+    {
+        var employee = await employeesService
+            .GetById(id)
+            .AsNoTracking()
+            .Select(e => EmployeesEditModel.From(e))
+            .FirstOrDefaultAsync();
+
+        if (employee == null)
+            return NotFound();
+
+        var departments = await departmentsService
+            .GetAll()
+            .AsNoTracking()
+            .Select(d => DepartmentModel.From(d))
+            .ToListAsync();
+
+        var programmingLanguages = await programmingLanguagesService
+            .GetAll()
+            .AsNoTracking()
+            .Select(pl => ProgrammingLanguageModel.From(pl))
+            .ToListAsync();
+
+        ViewBag.Departments = new SelectList(
+            departments,
+            nameof(DepartmentModel.Id),
+            nameof(DepartmentModel.Name)
+        );
+        ViewBag.ProgrammingLanguages = new SelectList(
+            programmingLanguages,
+            nameof(ProgrammingLanguageModel.Id),
+            nameof(ProgrammingLanguageModel.Name)
+        );
+
+        ViewBag.FirstNames = FirstNames;
+        ViewBag.LastNames = LastNames;
+
+        return View(employee);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, EmployeesEditModel model)
+    {
+        await employeesService.Edit(new EditEmployeeRequest(
+            id,
+            model.FirstName,
+            model.LastName,
+            model.Age,
+            model.Gender,
+            model.DepartmentId
+        ));
+
+        return RedirectToAction("Edit", new { id });
     }
 }
