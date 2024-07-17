@@ -7,9 +7,9 @@ namespace Application.Employees;
 
 internal sealed class EmployeesService(AppDbContext dbContext, ILogger<EmployeesService> logger) : IEmployeesService
 {
-    public IQueryable<Employee> GetById(int id) => dbContext.Employees.Where(e => e.Id == id);
+    public IQueryable<Employee> GetById(int id) => dbContext.Employees.Where(e => !e.IsDeleted && e.Id == id);
 
-    public IQueryable<Employee> GetAll() => dbContext.Employees.AsQueryable();
+    public IQueryable<Employee> GetAll() => dbContext.Employees.Where(e => !e.IsDeleted);
 
     public async Task<Employee> Create(CreateEmployeeRequest request)
     {
@@ -71,6 +71,24 @@ internal sealed class EmployeesService(AppDbContext dbContext, ILogger<Employees
 
         logger.LogInformation("Employee '{Id}' successfully edited", employee.Id);
         
+        return employee;
+    }
+
+    public async Task<Employee> Delete(int id)
+    {
+        var employee = await dbContext
+            .Employees
+            .FirstOrDefaultAsync(e => e.Id == id);
+
+        if (employee == null)
+            throw new ResourceNotFoundException<Employee, int>(id);
+
+        employee.Delete();
+
+        await dbContext.SaveChangesAsync();
+
+        logger.LogInformation("Employee '{Id}' successfully deleted", employee.Id);
+
         return employee;
     }
 }

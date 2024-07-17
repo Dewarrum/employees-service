@@ -145,4 +145,28 @@ public sealed class EmployeesController(
 
         return RedirectToAction("Edit", new { id });
     }
+
+    [HttpGet, Route("delete/{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var employee = await employeesService
+            .GetById(id)
+            .AsNoTracking()
+            .Select(e => EmployeesDeleteModel.From(e))
+            .FirstOrDefaultAsync();
+
+        if (employee == null)
+            return NotFound();
+
+        return View(employee);
+    }
+
+    [HttpPost, Route("delete/{id:int}")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        await employeesService.Delete(id);
+
+        return RedirectToAction("Index");
+    }
 }

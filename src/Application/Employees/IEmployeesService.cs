@@ -8,4 +8,5 @@ public interface IEmployeesService
     IQueryable<Employee> GetAll();
     Task<Employee> Create(CreateEmployeeRequest request);
     Task<Employee> Edit(EditEmployeeRequest request);
+    Task<Employee> Delete(int id);
 }

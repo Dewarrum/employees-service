@@ -1,0 +1,19 @@
+﻿@model Web.Models.Employees.EmployeesDeleteModel
+
+@{
+    ViewData["Title"] = "Delete employee";
+}
+
+<h1 class="display-4">Delete employee</h1>
+<div class="row">
+    @using (Html.BeginForm("Delete", "Employees", FormMethod.Post))
+    {
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <h2 class="display-6">Are you sure you want to delete @Model.FirstName @Model.LastName?</h2>
+        <input asp-for="Id" class="form-control" type="hidden"/>
+        <div class="flex-row">
+            <button type="submit" class="btn btn-primary">Delete</button>
+            @Html.ActionLink("Cancel", "Index", new object {}, new{@class="btn btn-secondary"})
+        </div>
+    }
+</div>

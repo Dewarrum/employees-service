@@ -18,5 +18,6 @@ public sealed class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
             .WithMany(d => d.Employees)
             .HasForeignKey(e => e.DepartmentId)
             .IsRequired();
+        builder.Property(e => e.IsDeleted).IsRequired().HasDefaultValue(false);
     }
 }

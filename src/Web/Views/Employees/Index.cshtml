@@ -26,7 +26,10 @@
                 <td>@employee.Age</td>
                 <td>@employee.Gender</td>
                 <td>@employee.DepartmentName</td>
-                <td>@Html.ActionLink("Edit", "Edit", new { id = employee.Id })</td>
+                <td>
+                    <span>@Html.ActionLink("Edit", "Edit", new { id = employee.Id })</span>
+                    <span>@Html.ActionLink("Delete", "Delete", new { id = employee.Id })</span>
+                </td>
             </tr>
         }
         </tbody>

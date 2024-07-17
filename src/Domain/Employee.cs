@@ -27,5 +27,11 @@ public sealed class Employee
     public Gender Gender { get; set; }
     public int DepartmentId { get; set; }
     public Department Department { get; private set; } = default!;
+    public bool IsDeleted { get; private set; }
     public ICollection<WorkingExperience> WorkingExperiences { get; private set; } = default!;
+
+    public void Delete()
+    {
+        IsDeleted = true;
+    }
 }
