@@ -7,15 +7,13 @@ public sealed class WorkingExperience
         Employee employee,
         int programmingLanguageId,
         ProgrammingLanguage programmingLanguage,
-        DateTime startDate,
-        DateTime endDate)
+        DateTime startDate)
     {
         EmployeeId = employeeId;
         Employee = employee;
         ProgrammingLanguageId = programmingLanguageId;
         ProgrammingLanguage = programmingLanguage;
         StartDate = startDate;
-        EndDate = endDate;
     }
 
     private WorkingExperience()
@@ -28,5 +26,5 @@ public sealed class WorkingExperience
     public int ProgrammingLanguageId { get; private set; }
     public ProgrammingLanguage ProgrammingLanguage { get; private set; } = default!;
     public DateTime StartDate { get; private set; }
-    public DateTime EndDate { get; private set; }
+    public DateTime? EndDate { get; private set; }
 }

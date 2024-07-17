@@ -39,8 +39,7 @@ internal sealed class EmployeesService(AppDbContext dbContext, ILogger<Employees
             employeeEntry.Entity,
             request.ProgrammingLanguageId,
             programmingLanguage,
-            DateTime.Now,
-            DateTime.Now
+            DateTime.UtcNow
         );
 
         await dbContext.WorkingExperiences.AddAsync(workingExperience);

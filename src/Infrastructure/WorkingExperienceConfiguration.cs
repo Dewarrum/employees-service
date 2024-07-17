@@ -10,7 +10,7 @@ public sealed class WorkingExperienceConfiguration : IEntityTypeConfiguration<Wo
     {
         builder.HasKey(w => w.Id);
         builder.Property(w => w.StartDate).IsRequired();
-        builder.Property(w => w.EndDate).IsRequired();
+        builder.Property(w => w.EndDate);
         builder.HasOne(w => w.ProgrammingLanguage)
             .WithMany(l => l.WorkingExperiences)
             .HasForeignKey(w => w.ProgrammingLanguageId)
