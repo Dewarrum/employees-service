@@ -12,13 +12,15 @@
         @using (Html.BeginForm("Add", "Employees", FormMethod.Post))
         {
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group autocomplete-wrapper first-name">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control"/>
+                <ul></ul>
             </div>
-            <div class="form-group">
+            <div class="form-group autocomplete-wrapper last-name">
                 <label asp-for="LastName" class="control-label"></label>
                 <input asp-for="LastName" class="form-control"/>
+                <ul></ul>
             </div>
             <div class="form-group">
                 <label asp-for="Age" class="control-label"></label>
@@ -40,3 +42,45 @@
         }
     </div>
 </div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    createAutocomplete($('.first-name.autocomplete-wrapper'), @Json.Serialize(ViewBag.FirstNames));
+    createAutocomplete($('.last-name.autocomplete-wrapper'), @Json.Serialize(ViewBag.LastNames));
+
+    function createAutocomplete($formGroup, values) {
+        const $input = $formGroup.find('input');
+        const $autocomplete = $formGroup.find('ul');
+        $input.on({
+            "focus": function() {
+                $(this).parent().css('border-color', '#CCCCCC');
+            },
+            "blur": function() {
+                $(this).parent().css('border-color', '#EEEEEE');
+            },
+            "keyup": function() {
+                const val = $(this).val();
+
+                if (val.length > 1) {
+                    $autocomplete.html("").hide();
+                    $.each(values, function(i) {
+                        if (values[i].match(new RegExp(val,'i'))) {
+                            const $li = $('<li/>')
+                                .html(values[i])
+                                .attr('data-value', values[i]);
+                            $autocomplete.append($li).show();
+                        }
+                    });
+
+                    $('li').on('click', function() {
+                        const selectedVal = $(this).attr('data-value');
+                        $input.val(selectedVal);
+                        $autocomplete.html("").hide();
+                    });
+                } else {
+                    $autocomplete.html("").hide();
+                }
+            }
+        });
+    }
+</script>

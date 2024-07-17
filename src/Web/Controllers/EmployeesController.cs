@@ -1,7 +1,6 @@
 ﻿using Application.Departments;
 using Application.Employees;
 using Application.ProgrammingLanguages;
-using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +16,18 @@ public sealed class EmployeesController(
     IProgrammingLanguagesService programmingLanguagesService)
     : Controller
 {
+    private static readonly IReadOnlyList<string> FirstNames =
+    [
+        "Иван", "Петр", "Николай", "Василий", "Максим", "Александр", "Евгений", "Дмитрий", "Игорь", "Олег", "Павел",
+        "Сергей", "Юрий"
+    ];
+
+    private static readonly IReadOnlyList<string> LastNames =
+    [
+        "Иванов", "Петров", "Николаев", "Васильев", "Максимов", "Александров", "Евгеньев", "Дмитриев", "Игорев",
+        "Олегов", "Павлов", "Сергеев", "Юрьев"
+    ];
+
     public async Task<IActionResult> Index()
     {
         var employees = await employeesService
@@ -53,6 +64,8 @@ public sealed class EmployeesController(
             nameof(ProgrammingLanguageModel.Id),
             nameof(ProgrammingLanguageModel.Name)
         );
+        ViewBag.FirstNames = FirstNames;
+        ViewBag.LastNames = LastNames;
 
         return View();
     }
