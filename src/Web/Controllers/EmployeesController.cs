@@ -10,6 +10,7 @@ using Web.Models.ProgrammingLanguages;
 
 namespace Web.Controllers;
 
+[Route("")]
 public sealed class EmployeesController(
     IEmployeesService employeesService,
     IDepartmentsService departmentsService,
@@ -28,6 +29,7 @@ public sealed class EmployeesController(
         "Олегов", "Павлов", "Сергеев", "Юрьев"
     ];
 
+    [HttpGet, Route("")]
     public async Task<IActionResult> Index()
     {
         var employees = await employeesService
@@ -40,6 +42,7 @@ public sealed class EmployeesController(
         return View(new EmployeesIndexModel(employees));
     }
 
+    [HttpGet, Route("add")]
     public async Task<IActionResult> Add()
     {
         var departments = await departmentsService
@@ -70,7 +73,7 @@ public sealed class EmployeesController(
         return View();
     }
 
-    [HttpPost]
+    [HttpPost, Route("add")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Add(EmployeesCreateModel model)
     {
@@ -86,6 +89,7 @@ public sealed class EmployeesController(
         return RedirectToAction("Index");
     }
 
+    [HttpGet, Route("edit/{id:int}")]
     public async Task<IActionResult> Edit(int id)
     {
         var employee = await employeesService
@@ -126,7 +130,7 @@ public sealed class EmployeesController(
         return View(employee);
     }
 
-    [HttpPost]
+    [HttpPost, Route("edit/{id:int}")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, EmployeesEditModel model)
     {
