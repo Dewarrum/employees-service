@@ -1,24 +1,30 @@
 ﻿using Domain;
 using Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Employees;
 
-internal sealed class EmployeesService : IEmployeesService
+internal sealed class EmployeesService(AppDbContext dbContext, ILogger<EmployeesService> logger) : IEmployeesService
 {
-    private readonly AppDbContext _dbContext;
-    private readonly ILogger<EmployeesService> _logger;
-
-    public EmployeesService(AppDbContext dbContext, ILogger<EmployeesService> logger)
-    {
-        _dbContext = dbContext;
-        _logger = logger;
-    }
-
-    public IQueryable<Employee> GetAll() => _dbContext.Employees.AsQueryable();
+    public IQueryable<Employee> GetAll() => dbContext.Employees.AsQueryable();
 
     public async Task<Employee> Create(CreateEmployeeRequest request)
     {
+        var department = await dbContext
+            .Departments
+            .FirstOrDefaultAsync(d => d.Id == request.DepartmentId);
+
+        if (department == null)
+            throw new ResourceNotFoundException<Department, int>(request.DepartmentId);
+
+        var programmingLanguage = await dbContext
+            .ProgrammingLanguages
+            .FirstOrDefaultAsync(pl => pl.Id == request.ProgrammingLanguageId);
+
+        if (programmingLanguage == null)
+            throw new ResourceNotFoundException<ProgrammingLanguage, int>(request.ProgrammingLanguageId);
+
         var employee = new Employee(
             request.FirstName,
             request.LastName,
@@ -27,10 +33,20 @@ internal sealed class EmployeesService : IEmployeesService
             request.DepartmentId
         );
 
-        _dbContext.Employees.Add(employee);
-        await _dbContext.SaveChangesAsync();
+        var employeeEntry = await dbContext.Employees.AddAsync(employee);
+        var workingExperience = new WorkingExperience(
+            employeeEntry.Entity.Id,
+            employeeEntry.Entity,
+            request.ProgrammingLanguageId,
+            programmingLanguage,
+            DateTime.Now,
+            DateTime.Now
+        );
 
-        _logger.LogInformation("Employee '{Id}' successfully created", employee.Id);
+        await dbContext.WorkingExperiences.AddAsync(workingExperience);
+        await dbContext.SaveChangesAsync();
+
+        logger.LogInformation("Employee '{Id}' successfully created", employee.Id);
 
         return employee;
     }

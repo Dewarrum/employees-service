@@ -1,8 +1,8 @@
 ﻿using Domain;
 
-namespace Application.Employees;
+namespace Web.Models.Employees;
 
-public sealed record CreateEmployeeRequest(
+public sealed record EmployeesCreateModel(
     string FirstName,
     string LastName,
     int Age,
