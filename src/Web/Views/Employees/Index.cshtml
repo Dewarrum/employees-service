@@ -4,34 +4,46 @@
     ViewData["Title"] = "Employees";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">First Name</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">Age</th>
-            <th scope="col">Gender</th>
-            <th scope="col">Department</th>
-            <th scope="col">Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var employee in Model.Employees)
-        {
-            <tr>
-                <td>@employee.FirstName</td>
-                <td>@employee.LastName</td>
-                <td>@employee.Age</td>
-                <td>@employee.Gender</td>
-                <td>@employee.DepartmentName</td>
-                <td>
-                    <span>@Html.ActionLink("Edit", "Edit", new { id = employee.Id })</span>
-                    <span>@Html.ActionLink("Delete", "Delete", new { id = employee.Id })</span>
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
+<div class="text-center container">
+    <h1 class="display-4">Employees</h1>
+    <div class="row">
+        <div class="col-9">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var employee in ViewBag.Employees)
+                {
+                    <tr>
+                        <td>@employee.FirstName</td>
+                        <td>@employee.LastName</td>
+                        <td>@employee.Age</td>
+                        <td>@employee.Gender</td>
+                        <td>@employee.DepartmentName</td>
+                        <td>
+                            <span>@Html.ActionLink("Edit", "Edit", new { id = employee.Id })</span>
+                            <span>@Html.ActionLink("Delete", "Delete", new { id = employee.Id })</span>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <form asp-controller="Employees" asp-action="Index" method="get" class="col-3">
+            <div class="form-group">
+                <label asp-for="Search" class="control-label">Search</label>
+                <input asp-for="Search" class="form-control"/>
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
 </div>

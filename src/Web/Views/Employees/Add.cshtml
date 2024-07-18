@@ -43,6 +43,7 @@
     </div>
 </div>
 
+<script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
     createAutocomplete($('.first-name.autocomplete-wrapper'), @Json.Serialize(ViewBag.FirstNames));
     createAutocomplete($('.last-name.autocomplete-wrapper'), @Json.Serialize(ViewBag.LastNames));

@@ -32,16 +32,28 @@ public sealed class EmployeesController(
     ];
 
     [HttpGet, Route("")]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(EmployeesIndexModel model)
     {
-        var employees = await employeesService
+        var query = employeesService
             .GetAll()
-            .AsNoTracking()
+            .AsNoTracking();
+
+        if (!string.IsNullOrEmpty(model.Search))
+        {
+            query = query.Where(e =>
+                e.FirstName.Contains(model.Search) || e.LastName.Contains(model.Search) || e.Department.Name.Contains(model.Search)
+            );
+        }
+
+        var employees = await query
+            .OrderBy(e => e.Id)
             .Include(e => e.Department)
             .Select(e => EmployeeModel.From(e))
             .ToListAsync();
 
-        return View(new EmployeesIndexModel(employees));
+        ViewBag.Employees = employees;
+
+        return View(model);
     }
 
     [HttpGet, Route("add")]
