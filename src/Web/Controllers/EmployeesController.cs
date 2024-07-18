@@ -48,6 +48,8 @@ public sealed class EmployeesController(
         var employees = await query
             .OrderBy(e => e.Id)
             .Include(e => e.Department)
+            .Include(e => e.WorkingExperiences.OrderByDescending(we => we.StartDate).Take(1))
+            .ThenInclude(we => we.ProgrammingLanguage)
             .Select(e => EmployeeModel.From(e))
             .ToListAsync();
 

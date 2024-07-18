@@ -9,7 +9,8 @@ public sealed record EmployeeModel(
     int Age,
     Gender Gender,
     int DepartmentId,
-    string DepartmentName
+    string DepartmentName,
+    string? ProgrammingLanguageName
 )
 {
     public static EmployeeModel From(Employee employee) => new(
@@ -19,6 +20,7 @@ public sealed record EmployeeModel(
         employee.Age,
         employee.Gender,
         employee.DepartmentId,
-        employee.Department.Name
+        employee.Department.Name,
+        employee.WorkingExperiences.FirstOrDefault()?.ProgrammingLanguage.Name
     );
 }
