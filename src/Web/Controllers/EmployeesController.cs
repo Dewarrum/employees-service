@@ -1,6 +1,7 @@
 ﻿using Application.Departments;
 using Application.Employees;
 using Application.ProgrammingLanguages;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using Web.Models.ProgrammingLanguages;
 namespace Web.Controllers;
 
 [Route("")]
+[Authorize]
 public sealed class EmployeesController(
     IEmployeesService employeesService,
     IDepartmentsService departmentsService,

@@ -28,7 +28,7 @@ internal sealed class UsersService(AppDbContext dbContext, IPasswordHasher hashe
         }
 
         user.LastActiveAt = DateTime.UtcNow;
-        _ = dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
         return user;
     }
 }

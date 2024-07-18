@@ -1,13 +1,15 @@
-﻿using System.Security.Claims;
+﻿using System.Net;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using Application.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 
 namespace Web.Auth;
 
-public sealed class AuthenticationHandler(
+public sealed class BasicAuthenticationHandler(
     IOptionsMonitor<AuthenticationSchemeOptions> options,
     ILoggerFactory logger,
     UrlEncoder encoder,
@@ -49,5 +51,12 @@ public sealed class AuthenticationHandler(
         var principal = new ClaimsPrincipal(identity);
 
         return AuthenticateResult.Success(new AuthenticationTicket(principal, "Basic"));
+    }
+
+    protected override Task HandleChallengeAsync(AuthenticationProperties properties)
+    {
+        Context.Response.Headers.WWWAuthenticate = new StringValues("Basic realm=\"Employees Service\"");
+        Context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+        return Task.CompletedTask;
     }
 }

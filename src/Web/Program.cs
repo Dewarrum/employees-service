@@ -13,7 +13,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddAuthentication("Basic")
-    .AddScheme<AuthenticationSchemeOptions, AuthenticationHandler>("Basic", options => { });
+    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("Basic", options => { });
 
 var app = builder.Build();
 
