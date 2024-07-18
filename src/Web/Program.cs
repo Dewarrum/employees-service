@@ -1,6 +1,8 @@
 using Application;
 using Infrastructure;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
+using Web.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +11,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"))
 );
-builder.Services.AddApplication();
+builder.Services.AddApplication(builder.Configuration);
+builder.Services.AddAuthentication("Basic")
+    .AddScheme<AuthenticationSchemeOptions, AuthenticationHandler>("Basic", options => { });
 
 var app = builder.Build();
 
@@ -26,6 +30,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
