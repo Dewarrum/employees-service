@@ -11,6 +11,7 @@ public sealed class AppDbContext : DbContext
         Departments = Set<Department>();
         WorkingExperiences = Set<WorkingExperience>();
         ProgrammingLanguages = Set<ProgrammingLanguage>();
+        Users = Set<User>();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -19,10 +20,12 @@ public sealed class AppDbContext : DbContext
         modelBuilder.ApplyConfiguration(new DepartmentConfiguration());
         modelBuilder.ApplyConfiguration(new WorkingExperienceConfiguration());
         modelBuilder.ApplyConfiguration(new ProgrammingLanguageConfiguration());
+        modelBuilder.ApplyConfiguration(new UserConfiguration());
     }
 
     public DbSet<Employee> Employees { get; private set; }
     public DbSet<Department> Departments { get; private set; }
     public DbSet<WorkingExperience> WorkingExperiences { get; private set; }
     public DbSet<ProgrammingLanguage> ProgrammingLanguages { get; private set; }
+    public DbSet<User> Users { get; private set; }
 }
